@@ -34,6 +34,23 @@ code --install-extension alejmendez.grails-test-runner
 cursor --install-extension alejmendez.grails-test-runner
 ```
 
+### Build from Source
+
+If you want to install the extension from source code:
+
+```bash
+git clone https://github.com/alejmendez/grails-test-runner.git
+cd grails-test-runner
+npm install
+npx @vscode/vsce package
+```
+
+This generates a `.vsix` file. Then install it with:
+
+```bash
+code --install-extension *.vsix
+```
+
 ## 🚀 Usage
 
 1. Open any `*Spec.groovy` file in your Grails project
