@@ -61,10 +61,14 @@ class GrailsTestCodeLensProvider {
             // Encontrar la línea donde está la clase
             const classLine = document.positionAt(classMatch.index).line;
             const range = new vscode.Range(classLine, 0, classLine, 0);
-            // CodeLens para ejecutar toda la clase
+            // CodeLens para ejecutar y rerun toda la clase
             codeLenses.push(new vscode.CodeLens(range, {
                 title: '▶ Run All Tests',
                 command: 'grails-test-runner.runTestClass',
+                arguments: [fullClassName, testType]
+            }), new vscode.CodeLens(range, {
+                title: '↺ Rerun All Tests',
+                command: 'grails-test-runner.rerunTestClass',
                 arguments: [fullClassName, testType]
             }));
         }
@@ -82,10 +86,14 @@ class GrailsTestCodeLensProvider {
                 // Encontrar la línea del método
                 const methodLine = document.positionAt(methodMatch.index).line;
                 const range = new vscode.Range(methodLine, 0, methodLine, 0);
-                // CodeLens para ejecutar test individual
+                // CodeLens para ejecutar y rerun test individual
                 codeLenses.push(new vscode.CodeLens(range, {
                     title: '▶ Run Test',
                     command: 'grails-test-runner.runTest',
+                    arguments: [fullClassName, testName, testType]
+                }), new vscode.CodeLens(range, {
+                    title: '↺ Rerun Test',
+                    command: 'grails-test-runner.rerunTest',
                     arguments: [fullClassName, testName, testType]
                 }));
             }
@@ -112,7 +120,7 @@ class GrailsTestCodeLensProvider {
 /**
  * Ejecuta un test usando Gradle en la terminal integrada
  */
-function runGradleTest(className, testName, testType) {
+function runGradleTest(className, testName, testType, rerunTasks = false) {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (!workspaceFolders || workspaceFolders.length === 0) {
         vscode.window.showErrorMessage('No hay workspace abierto');
@@ -130,7 +138,8 @@ function runGradleTest(className, testName, testType) {
     else {
         testFilter = `"${className}"`;
     }
-    const command = `./gradlew ${testType} --tests ${testFilter}`;
+    const rerunFlag = rerunTasks ? ' --rerun-tasks' : '';
+    const command = `./gradlew ${testType} --tests ${testFilter}${rerunFlag}`;
     // Crear o reusar terminal
     let terminal = vscode.window.terminals.find(t => t.name === 'Grails Tests');
     if (!terminal) {
@@ -161,6 +170,16 @@ function activate(context) {
         runGradleTest(className, null, testType);
     });
     context.subscriptions.push(runTestClassCommand);
+    // Comando para rerun un test individual con --rerun-tasks
+    const rerunTestCommand = vscode.commands.registerCommand('grails-test-runner.rerunTest', (className, testName, testType) => {
+        runGradleTest(className, testName, testType, true);
+    });
+    context.subscriptions.push(rerunTestCommand);
+    // Comando para rerun toda la clase con --rerun-tasks
+    const rerunTestClassCommand = vscode.commands.registerCommand('grails-test-runner.rerunTestClass', (className, testType) => {
+        runGradleTest(className, null, testType, true);
+    });
+    context.subscriptions.push(rerunTestClassCommand);
 }
 /**
  * Desactiva la extensión

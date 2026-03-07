@@ -2,7 +2,7 @@
     "name": "grails-test-runner",
     "displayName": "Grails Test Runner",
     "description": "Ejecuta tests de Grails/Spock con CodeLens",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "publisher": "alejmendez",
     "icon": "icon.png",
     "engines": {
@@ -32,6 +32,14 @@
             {
                 "command": "grails-test-runner.runTestClass",
                 "title": "Run Grails Test Class"
+            },
+            {
+                "command": "grails-test-runner.rerunTest",
+                "title": "Rerun Grails Test"
+            },
+            {
+                "command": "grails-test-runner.rerunTestClass",
+                "title": "Rerun Grails Test Class"
             }
         ]
     },

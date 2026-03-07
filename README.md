@@ -12,6 +12,7 @@ Run Grails/Spock tests directly from your editor with CodeLens integration.
 - **CodeLens Integration** - See "Run Test" buttons directly above your test methods and classes
 - **Run Individual Tests** - Execute a single test method with one click
 - **Run All Tests in Class** - Run all tests in a Spec file at once
+- **Rerun Tests** - Force re-execution with `--rerun-tasks`, bypassing Gradle's up-to-date checks
 - **Automatic Test Type Detection** - Distinguishes between unit tests and integration tests
 - **Terminal Output** - See test results directly in the integrated terminal
 
@@ -56,7 +57,9 @@ code --install-extension *.vsix
 1. Open any `*Spec.groovy` file in your Grails project
 2. You'll see CodeLens buttons above your code:
    - **▶ Run All Tests** - Above the class declaration, runs all tests in the file
+   - **↺ Rerun All Tests** - Same as above but with `--rerun-tasks` to bypass Gradle cache
    - **▶ Run Test** - Above each test method, runs only that specific test
+   - **↺ Rerun Test** - Same as above but with `--rerun-tasks` to bypass Gradle cache
 3. Click the button to execute the test in the integrated terminal
 
 ## 🧪 Supported Test Types
@@ -78,6 +81,8 @@ code --install-extension *.vsix
 |---------|-------------|
 | `Grails Test Runner: Run Test` | Run the test method at cursor position |
 | `Grails Test Runner: Run Test Class` | Run all tests in the current file |
+| `Grails Test Runner: Rerun Test` | Rerun the test method with `--rerun-tasks` |
+| `Grails Test Runner: Rerun Test Class` | Rerun all tests in the current file with `--rerun-tasks` |
 
 ## 🛠️ Development
 
